@@ -2,7 +2,7 @@
 import type { ILoginUser } from "@/utils/type"
 import { ElNotification, type FormInstance, type FormRules } from "element-plus"
 import { store } from "@/store"
-import { reactive, ref } from "vue"
+import { ref } from "vue"
 
 const drawer = ref(false)
 const userData = ref<ILoginUser>({})
@@ -61,8 +61,8 @@ const openDrawer = (data?: ILoginUser) => {
 }
 
 const handleCancel = () => {
-  drawerRef.value.close()
   formInstanceRef.value?.resetFields()
+  drawerRef.value.close()
 }
 
 const handleSubmit = (formRef: FormInstance | undefined) => {
@@ -172,7 +172,9 @@ defineExpose({
         <el-form-item prop="email" label="Tài khoản">
           <el-input v-model="userData.email" placeholder="Nhập vào email" :disabled="!!userData.id" />
         </el-form-item>
-
+        <el-form-item v-if="!userData.id" prop="password" label="Mật khẩu">
+          <el-input v-model="userData.password" type="password" placeholder="Nhập vào mật khẩu" />
+        </el-form-item>
         <el-form-item v-if="userData.id" label="Phân quyền">
           <el-select v-model="roleSelecter">
             <el-option label="USER" value="USER" />
